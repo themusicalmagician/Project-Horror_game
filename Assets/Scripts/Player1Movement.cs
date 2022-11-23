@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class Player1Movement : MonoBehaviour
 {
     private Rigidbody2D rb;
     //public Animator animator;
@@ -34,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        //sprinting
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             speed = 10;
@@ -44,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
             speed = 5;
         }
         
+        //jumping
         isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
 
         if (isGrounded == true && Input.GetKeyDown(KeyCode.Space))
@@ -73,6 +75,7 @@ public class PlayerMovement : MonoBehaviour
             isJumping = false;
         }
 
+        //turn character around on movement
         if(moveInput > 0)
         {
             transform.eulerAngles = new Vector3(0, 0, 0);
@@ -81,7 +84,6 @@ public class PlayerMovement : MonoBehaviour
         {
             transform.eulerAngles = new Vector3(0, 180, 0);
         }
-
     }
 
 }
