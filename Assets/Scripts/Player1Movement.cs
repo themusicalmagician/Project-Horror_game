@@ -11,6 +11,9 @@ public class Player1Movement : MonoBehaviour
     public float jumpForce;
     private float moveInput;
 
+    public int maxHealth = 100;
+    public int health;
+
     private bool isGrounded;
     public Transform feetPos;
     public float checkRadius;
@@ -20,16 +23,41 @@ public class Player1Movement : MonoBehaviour
     public float jumpTime;
     private bool isJumping;
 
+    public float KBforce;
+    public float KBcounter;
+    public float KBtotalTime;
+
+    public bool KnockFromRight;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        health = maxHealth;
     }
 
     void FixedUpdate()
     {
+        if (KBcounter <= 0)
+        {
+            rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
+        }
+        else
+        {
+            if (KnockFromRight == true)
+            {
+                rb.velocity = new Vector2(-KBforce, 10);
+            }
+
+            if (KnockFromRight == false)
+            {
+                rb.velocity = new Vector2(KBforce, 10);
+            }
+
+            KBcounter -= Time.deltaTime;
+        }
+
         //animator.SetFloat("Speed", Mathf.Abs(moveInput));
         moveInput = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
     }
 
     void Update()
@@ -86,4 +114,12 @@ public class Player1Movement : MonoBehaviour
         }
     }
 
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
 }
