@@ -1,31 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyDamage : MonoBehaviour
 {
     public int damage;
-    public Player1Movement playerHealth;
-    public Player1Movement knockback;
+    public Movement playerHealth;
+    public Movement knockback;
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Player")
-        {
-            knockback.KBcounter = knockback.KBtotalTime;
-            if (collision.transform.position.x <= transform.position.x)
-            {
-                knockback.KnockFromRight = true;
-            }
-
-            if (collision.transform.position.x > transform.position.x)
-            {
-                knockback.KnockFromRight = false;
-            }
-
+        if (collision.gameObject.tag.Equals("Player"))
             playerHealth.TakeDamage(damage);
-        }
     }
 
-    
+
 }

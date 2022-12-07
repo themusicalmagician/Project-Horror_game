@@ -7,56 +7,69 @@ public class Enemy : MonoBehaviour
     public int health = 1000;
     //public GameObject deathEffect;
 
-    public Transform[] patrolPoints;
     public float moveSpeed;
     public int patrolDestination;
+    private float dirX;
 
-    public Transform playerTransform;
+    public Transform player1Transform;
     public bool isChasing;
     public float chaseDistance;
+
+    [SerializeField] private GameObject gotchaText;
+    private Rigidbody2D rb;
+
+    void Start()
+    {
+        gotchaText.SetActive(false);
+        rb = GetComponent<Rigidbody2D>();
+        dirX = -1f;
+    }
 
     void Update()
     {
         if (isChasing)
         {
-            if (transform.position.x > playerTransform.position.x)
+            if (transform.position.x > player1Transform.position.x)
             {
-                transform.localScale = new Vector3(4, 4, 4);
                 transform.position += Vector3.left * moveSpeed * Time.deltaTime;
             }
 
-            if (transform.position.x < playerTransform.position.x)
+            if (transform.position.x < player1Transform.position.x)
             {
-                transform.localScale = new Vector3(-4, -4, -4);
                 transform.position += Vector3.right * moveSpeed * Time.deltaTime;
             }
         }
         else
         {
-            if (Vector2.Distance(transform.position, playerTransform.position) < chaseDistance)
+            if (Vector2.Distance(transform.position, player1Transform.position) < chaseDistance)
             {
                 isChasing = true;
             }
 
+            if (transform.position.x < -15f)
+                dirX = 1f;
+            if (transform.position.x > -10f)
+                dirX = -1f;
 
-            if (patrolDestination == 0)
-            {
-                transform.position = Vector2.MoveTowards(transform.position, patrolPoints[0].position, moveSpeed * Time.deltaTime);
-                if (Vector2.Distance(transform.position, patrolPoints[0].position) < .2f)
-                {
-                    patrolDestination = 1;
-                }
-            }
-
-            if (patrolDestination == 1)
-            {
-                transform.position = Vector2.MoveTowards(transform.position, patrolPoints[1].position, moveSpeed * Time.deltaTime);
-                if (Vector2.Distance(transform.position, patrolPoints[1].position) < .2f)
-                {
-                    patrolDestination = 0;
-                }
-            }
         }
+
+    }
+
+    private void FixedUpdate()
+    {
+        rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag.Equals("Player"))
+            gotchaText.SetActive(true);
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag.Equals("Player"))
+            gotchaText.SetActive(false);
     }
 
     public void TakeDamage(int damage)
