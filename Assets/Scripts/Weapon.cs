@@ -11,7 +11,7 @@ public class Weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("[7]"))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             Shoot();
         }

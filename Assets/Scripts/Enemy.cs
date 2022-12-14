@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour
 {
@@ -15,12 +16,10 @@ public class Enemy : MonoBehaviour
     public bool isChasing;
     public float chaseDistance;
 
-    [SerializeField] private GameObject gotchaText;
     private Rigidbody2D rb;
 
     void Start()
     {
-        gotchaText.SetActive(false);
         rb = GetComponent<Rigidbody2D>();
         dirX = -1f;
     }
@@ -53,6 +52,8 @@ public class Enemy : MonoBehaviour
 
         }
 
+
+
     }
 
     private void FixedUpdate()
@@ -63,13 +64,12 @@ public class Enemy : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag.Equals("Player"))
-            gotchaText.SetActive(true);
-    }
+            SceneManager.LoadScene(2);
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag.Equals("Player"))
-            gotchaText.SetActive(false);
+        if (collision.gameObject.CompareTag("Object"))
+        {
+            Destroy(collision.gameObject);
+        }
     }
 
     public void TakeDamage(int damage)

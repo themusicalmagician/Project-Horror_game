@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyHide : MonoBehaviour
 {
@@ -8,12 +9,10 @@ public class EnemyHide : MonoBehaviour
     private float moveSpeed = 7f;
     private Rigidbody2D rb;
 
-    [SerializeField] private GameObject gotchaText;
-
     // Start is called before the first frame update
     void Start()
     {
-        gotchaText.SetActive(false);
+       // gotchaText.SetActive(false);
         rb = GetComponent<Rigidbody2D>();
         dirX = -1f;
     }
@@ -35,12 +34,6 @@ public class EnemyHide : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag.Equals("Player"))
-            gotchaText.SetActive(true);
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag.Equals("Player"))
-            gotchaText.SetActive(false);
+            SceneManager.LoadScene(2);
     }
 }

@@ -36,6 +36,16 @@ public class Movement : MonoBehaviour
         {
             transform.eulerAngles = new Vector3(0, 180, 0);
         }
+
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            moveSpeed = 15f;
+        }
+
+        if (Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            moveSpeed = 8f;
+        }
     }
 
     public void TakeDamage(int damage)

@@ -20,7 +20,7 @@ public class DetectPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(canHide && Input.GetKey(KeyCode.DownArrow))
+        if(canHide && Input.GetKey(KeyCode.S))
         {
             Physics2D.IgnoreLayerCollision(8, 9, true);
             rend.sortingOrder = 0;
